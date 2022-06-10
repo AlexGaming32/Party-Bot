@@ -16,8 +16,8 @@ servers = [981237860734742539]
 
 
 @client.slash_command(guild_ids = servers, name = 'reveal', description = 'Gibt einen Link zum Source Code des Bots')
-async def banword(ctx):
-    embed=discord.Embed(title="No more reveal, hatte kein bock das random leute code sehen :cold_face:", color=0xA020F0)
+async def source(ctx):
+    embed=discord.Embed(title="Github Repo: https://github.com/AlexGaming32/Party-Bot :cold_face:", color=0xA020F0)
     await ctx.respond(embed=embed)
   
 @client.event
@@ -178,10 +178,10 @@ async def on_message(message):
                 embed=discord.Embed(title="Blacklist", description=f"**{message.author}**, Deine Nachricht wurde gelöscht weil sie ein Wort enthielt das ein Admin auf die Blacklist gesetzt hat!", color=0xA020F0)
                 await message.channel.send(embed=embed)
 
-    if 'discord.gg/' in message.content:
-        embed=discord.Embed(title="Blacklist", description=f"**{message.author}**, Einladungen sind hier verboten!", color=0xA020F0)
-        await message.delete()
-        await message.channel.send(embed=embed) 
+        if 'discord.gg/' in message.content:
+            embed=discord.Embed(title="Blacklist", description=f"**{message.author}**, Einladungen sind hier verboten!", color=0xA020F0)
+            await message.delete()
+            await message.channel.send(embed=embed) 
 
 @client.slash_command(guild_ids = servers, name = 'banword', description = '[Admin] Bannt ein Wort vom Server!')
 @commands.has_role("Party-Bot Admin 😎")

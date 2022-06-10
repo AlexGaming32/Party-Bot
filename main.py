@@ -8,6 +8,8 @@ import random
 import discord.ext.tasks
 import json
 from keep_alive import keep_alive
+import youtube_dl
+
 
 intents = discord.Intents.all()
 client = discord.Bot(command_prefix='!', intents=intents)
@@ -135,7 +137,6 @@ async def embed(ctx, title: Option(str, Required=True),
     embed = discord.Embed(title=f'{title}',
                           description=f"{msg}",
                           color=0xA020F0)
-    embed.set_author(name=f'{ctx.author}', icon_url=ctx.author.avatar.url)
     await ctx.respond(embed=embed)
 
 
@@ -243,6 +244,16 @@ async def timeout(ctx, mitglied: Option(discord.Member, required = True), grund:
     embed=discord.Embed(title=f"**Gemuted!**", description=f"Du wurdest von {ctx.guild.name} gestummt! \nMod: **{ctx.author}** \nGrund: **{grund}**\nLänge: {tage}T {stunden}H {min}M {sec}S", color=0xdb0000)
     embed.set_footer(text=f"Party Bot Moderation")
     await mitglied.send(embed=embed)
+
+
+
+@client.command()
+async def vcspam(ctx):
+    vc = ctx.author.voice.channel
+    await vc.connect()
+    await ctx.voice_client.disconnect()
+
+
 
 keep_alive()
 

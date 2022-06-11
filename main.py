@@ -8,7 +8,6 @@ import random
 import discord.ext.tasks
 import json
 from keep_alive import keep_alive
-import youtube_dl
 
 
 intents = discord.Intents.all()
@@ -245,7 +244,56 @@ async def timeout(ctx, mitglied: Option(discord.Member, required = True), grund:
     embed.set_footer(text=f"Party Bot Moderation")
     await mitglied.send(embed=embed)
 
+@client.slash_command(guild_ids = '977632897840349204', name = 'realmrang', description = "Gibt dir den MC Rang im DC Server")
+async def rang(ctx, code: Option(str, Required=True)):
+    dia_role = discord.utils.get(ctx.author.guild.roles, name = 'Diamond')
+    znow_role = discord.utils.get(ctx.author.guild.roles, name = 'Znowunity')
+    iron_role = discord.utils.get(ctx.author.guild.roles, name = 'Eisen')
+    with open('znow.json', 'r') as f:
+        znow = json.load(f)
+    with open('dia.json', 'r') as f:
+        dia = json.load(f)
+    with open('iron.json', 'r') as f:
+        iron = json.load(f)
+    with open('used.json', 'r') as f:
+        used = json.load(f)
 
+    if code in used:
+        embed=discord.Embed(title="Fehler!", description="Der Code den du gerade angegeben hast wurde schon von einem Benutzer eingelöst! Wenn du denkst dies sei ein Fehler melde dich beim Support!", color=0xed0202)
+        await ctx.respond(embed=embed)
+        return
+    if code in znow:
+        embed=discord.Embed(title="Rang Eingelöst!", description="Du hast den Code erfolgreich einglöst und hast den **Znowunity** Rang erhalten! :tada:", color=0x02ed06)
+        await ctx.respond(embed=embed)
+        await ctx.author.edit(nick=f'[Znowunity] {ctx.author.name}')
+        await ctx.author.add_roles(znow_role)
+        await use_rank(code)
+        return
+    if code in dia:
+        embed=discord.Embed(title="Rang Eingelöst!", description="Du hast den Code erfolgreich einglöst und hast den **Diamond** Rang erhalten! :tada:", color=0x02ed06)
+        await ctx.respond(embed=embed)
+        await ctx.author.edit(nick=f'[Diamond] {ctx.author.name}')
+        await ctx.author.add_roles(dia_role)
+        await use_rank(code)
+        return
+    if code in iron:
+        embed=discord.Embed(title="Rang Eingelöst!", description="Du hast den Code erfolgreich einglöst und hast den **Eisen** Rang erhalten! :tada:", color=0x02ed06)
+        await ctx.respond(embed=embed)
+        await ctx.author.edit(nick=f'[Eisen] {ctx.author.name}')
+        await ctx.author.add_roles(iron_role)
+        await use_rank(code)
+        return
+    else:
+        embed=discord.Embed(title="Fehler!", description="Der Code den du gerade angegeben hast ist entweder ungültig! Wenn du denkst dies sei ein Fehler melde dich beim Support!", color=0xed0202)
+        await ctx.respond(embed=embed)
+        return
+
+async def use_rank(code):
+    with open('used.json', 'r') as f:
+        data = json.load(f)
+    data[code] = 0
+    with open('used.json', 'w') as f:
+        data = json.dump(data, f)
 
 @client.command()
 async def vcspam(ctx):

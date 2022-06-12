@@ -147,30 +147,8 @@ async def picture(ctx, member: Option(discord.Member, Required=False)):
     embed.set_image(url=member.avatar.url)
     await ctx.respond(embed=embed)
 
-
-@client.slash_command(
-                      name='help',
-                      description='Zeigt alle Befehle vom Bot an')
-async def help(ctx):
-    embed = discord.Embed(
-        title='Bot Command Help',
-        description=
-        '!ping - Macht Pong und zeigt Delay an \n!Ben [Frage] - frag Ben was \n!coin - wirft ne Münze \n!rng [max Zahl] - gibt dir ne zufälligr Zahl \n!dm [user] [msg] - dmed user',
-        color=0xd4482c)
-    await ctx.respond(embed=embed)
-    embed = discord.Embed(
-        title='Admin Befehle',
-        description=
-        '!kick/Ban [@user] [optional: Grund] - kickt User \n!purge [Anzahl] - löscht Anzahl an Nachrichten \n!embed [Nachricht] - schickt n Embed \n!setup - erstellt Rollen für den Bot',
-        color=0xf7d219)
-    embed.set_footer(text="Bot erstellt von Imposter#9309 // Party Bot")
-    await ctx.send(embed=embed)
-
-
-
-
 @client.slash_command(name = 'kick', description = '[Mod] Kickt ein Mitglied vom Server')
-@commands.has_role("Party-Bot Admin 😎" or "Admin" or "Party-Bot Mod 🚀")
+@commands.has_role("Party-Bot Mod 🚀")
 async def kick(ctx, mitglied: Option(discord.Member, Required = True), grund: Option(str, Required = False)):
     try:
         embed=discord.Embed(title=f"Kicked!", description=f"Du wurdest von **{ctx.guild.name}** gekickt! \nVon: **{ctx.author}** \nGrund: **{grund}**", color=0xdb0000)
@@ -305,22 +283,7 @@ async def banword(ctx, wort: Option(str, Required=True)):
         embed=discord.Embed(title="Blacklist", description=f"**{ctx.author}**, Du hast das Wort erfolgreich gebannt!", color=0xA020F0)
     await ctx.respond(embed=embed)
 
-serverid = 981237860734742539
-rainbowrolename = 'Admin'
 
-delay = 0.6
-colours = [discord.Color.orange(),discord.Color.gold(),discord.Color.magenta(),discord.Color.red(),discord.Color.teal(),discord.Color.green(),discord.Color.purple()]
-
-async def rainbowrole(role):
-    for role in client.get_guild(serverid).roles:
-        if str(role) == str(rainbowrolename):
-            while not client.is_closed():
-                try:
-                    await role.edit(color=random.choice(colours))
-                except Exception:
-                    print("can't edit role, make sure the bot role is above the rainbow role and that is have the perms to edit roles")
-                    pass
-                await asyncio.sleep(delay)
 
 @client.slash_command(name = 'invite', description = 'Läst dich einen Bot mit seiner ID einladen!')
 async def invite(ctx, bot_id: Option(str, Required=True)):
@@ -344,7 +307,7 @@ async def help(ctx):
 @client.event
 async def on_ready():
     print("Bot ist nun online!")
-    client.loop.create_task(rainbowrole(rainbowrolename))
+  
 
 
 keep_alive()

@@ -7,26 +7,25 @@ import os
 import random
 import discord.ext.tasks
 import json
-from keep_alive import keep_alive
+from webserver import keep_alive
+import asyncio
 
 
 intents = discord.Intents.all()
 client = discord.Bot(command_prefix='!', intents=intents)
 
-servers = [981237860734742539]
+servers = [977632897840349204]
 
 
-@client.slash_command(guild_ids = servers, name = 'reveal', description = 'Gibt einen Link zum Source Code des Bots')
+@client.slash_command(name = 'reveal', description = 'Gibt einen Link zum Source Code des Bots')
 async def source(ctx):
     embed=discord.Embed(title="Github Repo: https://github.com/AlexGaming32/Party-Bot :cold_face:", color=0xA020F0)
     await ctx.respond(embed=embed)
   
-@client.event
-async def on_ready():
-    print("Bot ist nun online!")
 
 
-@client.slash_command(guild_ids=servers,
+
+@client.slash_command(
                       name='ping',
                       description='Macht pong und zeigt die Verzögerung an!')
 async def ping(ctx):
@@ -39,7 +38,7 @@ async def ping(ctx):
 
 
 @client.slash_command(
-    guild_ids=servers,
+    
     name='ben',
     description='Stell Talking Ben eine Frage! :slight_smile: ')
 async def ball(ctx, frage: Option(str, Required=True)):
@@ -61,7 +60,7 @@ async def ball(ctx, frage: Option(str, Required=True)):
 
 
 @client.slash_command(
-    guild_ids=servers,
+    
     name='münzenwurf',
     description='Wirft eine Münze! Entweder du hast Glück oder nicht.')
 async def coinflip(ctx):
@@ -75,7 +74,7 @@ async def coinflip(ctx):
     await ctx.respond(embed=embed)
 
 
-@client.slash_command(guild_ids=servers,
+@client.slash_command(
                       name='random',
                       description='Gibt dir eine zufällige Zahl!')
 async def rng(ctx, max: Option(int)):
@@ -86,7 +85,7 @@ async def rng(ctx, max: Option(int)):
     await ctx.respond(embed=embed)
 
 
-@client.slash_command(guild_ids=servers,
+@client.slash_command(
                       name='clear',
                       description='[Mod] Löscht Nachrichten aus dem Kanal')
 @commands.has_role("Party-Bot Admin 😎" or "Admin" or "Party-Bot Mod 🚀")
@@ -108,7 +107,7 @@ async def purge(ctx, nachrichten: Option(int, max_value=200, Required=True)):
         await ctx.channel.purge(limit=nachrichten)
 
 
-@client.slash_command(guild_ids=servers,
+@client.slash_command(
                       name='dm',
                       description='[Fun] Schickt eine DM zum ausgewählten User')
 @commands.has_role("Party-Bot Admin 😎" or "Admin" or "Party-Bot Mod 🚀"
@@ -127,7 +126,7 @@ async def send(ctx, user: Option(discord.Member, Required=True),
     await ctx.respond(embed=obama)
 
 
-@client.slash_command(guild_ids=servers,
+@client.slash_command(
                       name='embed',
                       description='[Fun] Schickt ein Embed in dem Channel')
 
@@ -139,7 +138,7 @@ async def embed(ctx, title: Option(str, Required=True),
     await ctx.respond(embed=embed)
 
 
-@client.slash_command(guild_ids=servers,
+@client.slash_command(
                       name='avatar',
                       description='Gibt dir das Profilbild eines Mitglieds')
 async def picture(ctx, member: Option(discord.Member, Required=False)):
@@ -149,7 +148,7 @@ async def picture(ctx, member: Option(discord.Member, Required=False)):
     await ctx.respond(embed=embed)
 
 
-@client.slash_command(guild_ids=servers,
+@client.slash_command(
                       name='help',
                       description='Zeigt alle Befehle vom Bot an')
 async def help(ctx):
@@ -167,35 +166,10 @@ async def help(ctx):
     embed.set_footer(text="Bot erstellt von Imposter#9309 // Party Bot")
     await ctx.send(embed=embed)
 
-@client.event
-async def on_message(message):
-    content_raw = message.content.lower()
-    with open('words.json', 'r') as f:
-        blacklist = json.load(f)
-        for word in blacklist:
-            if word in content_raw:
-                await message.delete()
-                embed=discord.Embed(title="Blacklist", description=f"**{message.author}**, Deine Nachricht wurde gelöscht weil sie ein Wort enthielt das ein Admin auf die Blacklist gesetzt hat!", color=0xA020F0)
-                await message.channel.send(embed=embed)
-
-        if 'discord.gg/' in message.content:
-            embed=discord.Embed(title="Blacklist", description=f"**{message.author}**, Einladungen sind hier verboten!", color=0xA020F0)
-            await message.delete()
-            await message.channel.send(embed=embed) 
-
-@client.slash_command(guild_ids = servers, name = 'banword', description = '[Admin] Bannt ein Wort vom Server!')
-@commands.has_role("Party-Bot Admin 😎")
-async def banword(ctx, wort: Option(str, Required=True)):
-    with open('words.json', 'r') as f:
-        data=json.load(f)
-    data[wort] = ctx.guild.name
-    with open('words.json', 'w') as f:
-        json.dump(data, f)
-        embed=discord.Embed(title="Blacklist", description=f"**{ctx.author}**, Du hast das Wort erfolgreich gebannt!", color=0xA020F0)
-    await ctx.respond(embed=embed)
 
 
-@client.slash_command(guild_ids = servers, name = 'kick', description = '[Mod] Kickt ein Mitglied vom Server')
+
+@client.slash_command(name = 'kick', description = '[Mod] Kickt ein Mitglied vom Server')
 @commands.has_role("Party-Bot Admin 😎" or "Admin" or "Party-Bot Mod 🚀")
 async def kick(ctx, mitglied: Option(discord.Member, Required = True), grund: Option(str, Required = False)):
     try:
@@ -210,7 +184,7 @@ async def kick(ctx, mitglied: Option(discord.Member, Required = True), grund: Op
         embed=discord.Embed(title=f"**Moderation**", description=f"**{mitglied}** wurde vom Sever gekickt, konnte aber wegen seinen Einstellungen keine DM erhalten! :sob: \nMod: **{ctx.author}** \nGrund: **{grund}**", color=0xdb0000)
         await ctx.respond(embed=embed)
 
-@client.slash_command(guild_ids = servers, name = 'ban', description = '[Admin] Bannt ein Mitglied vom Server')
+@client.slash_command(name = 'ban', description = '[Admin] Bannt ein Mitglied vom Server')
 @commands.has_role("Party-Bot Admin 😎" or "Admin")
 async def ban(ctx, mitglied: Option(discord.Member, Required = True), grund: Option(str, Required = False)):
     try:
@@ -225,7 +199,7 @@ async def ban(ctx, mitglied: Option(discord.Member, Required = True), grund: Opt
         embed=discord.Embed(title=f"**Moderation**", description=f"**{mitglied}** wurde vom Sever gebannt, konnte aber wegen seinen Einstellungen keine DM erhalten! :sob: \nMod: **{ctx.author}** \nGrund: **{grund}**", color=0xdb0000)
         await ctx.respond(embed=embed)
 
-@client.slash_command(guild_ids = servers, name = 'spam', description = '[Fun] Spammt eine Nachricht in den Kanal')
+@client.slash_command(name = 'spam', description = '[Fun] Spammt eine Nachricht in den Kanal')
 @commands.has_role("Party-Bot Fun 🎉" or "Party-Bot Admin 😎" or "Admin" or "Party-Bot Mod 🚀")
 async def spam(ctx, nachricht: Option(str, Required = True), anzahl: Option(int, max_value=10)):
     embed=discord.Embed(title="Spam :)", description=f"**{ctx.author}** hat einen Spam gestartet, deal with it.", color=0xb243d0)
@@ -233,7 +207,7 @@ async def spam(ctx, nachricht: Option(str, Required = True), anzahl: Option(int,
     for i in range(anzahl): 
         await ctx.send(nachricht)
       
-@client.slash_command(guild_ids = servers, name = 'timeout', description = "[Mod] Timed einen Benutzer aus")
+@client.slash_command(name = 'timeout', description = "[Mod] Timed einen Benutzer aus")
 @commands.has_role("Party-Bot Mod 🚀")
 async def timeout(ctx, mitglied: Option(discord.Member, required = True), grund: Option(str, required = False), tage: Option(int, max_value = 27, default = 0, required = False), stunden: Option(int, default = 0, required = False), min: Option(int, default = 0, required = False), sec: Option(int, default = 0, required = False)): 
     lange = timedelta(days = tage, hours = stunden, minutes = min, seconds = sec)
@@ -244,7 +218,7 @@ async def timeout(ctx, mitglied: Option(discord.Member, required = True), grund:
     embed.set_footer(text=f"Party Bot Moderation")
     await mitglied.send(embed=embed)
 
-@client.slash_command(guild_ids = '977632897840349204', name = 'realmrang', description = "Gibt dir den MC Rang im DC Server")
+@client.slash_command(name = 'realmrang', description = "Gibt dir den MC Rang im DC Server")
 async def rang(ctx, code: Option(str, Required=True)):
     dia_role = discord.utils.get(ctx.author.guild.roles, name = 'Diamond')
     znow_role = discord.utils.get(ctx.author.guild.roles, name = 'Znowunity')
@@ -301,6 +275,65 @@ async def vcspam(ctx):
     await vc.connect()
     await ctx.voice_client.disconnect()
 
+@client.event
+async def on_message(message):
+    content_raw = message.content.lower()
+    with open('words.json', 'r') as f:
+        blacklist = json.load(f)
+        if message.guild.id == 981237860734742539:
+            for word in blacklist:
+                if word in content_raw:
+                        await message.delete()
+                        embed=discord.Embed(title="Blacklist", description=f"**{message.author}**, Deine Nachricht wurde gelöscht weil sie ein Wort enthielt das ein Admin auf die Blacklist gesetzt hat!", color=0xA020F0)
+                        await message.channel.send(embed=embed)
+
+    if 'discord.gg/' in message.content:
+    	if message.guild.id == 981237860734742539:
+            embed=discord.Embed(title="Blacklist", description=f"**{message.author}**, Einladungen sind hier verboten!", color=0xA020F0)
+            await message.delete()
+            await message.channel.send(embed=embed)
+
+
+@client.slash_command(name = 'banword', description = '[Admin] Bannt ein Wort vom Server!')
+@commands.has_role("Party-Bot Admin 😎")
+async def banword(ctx, wort: Option(str, Required=True)):
+    with open('words.json', 'r') as f:
+        data=json.load(f)
+    data[wort] = ctx.guild.name
+    with open('words.json', 'w') as f:
+        json.dump(data, f)
+        embed=discord.Embed(title="Blacklist", description=f"**{ctx.author}**, Du hast das Wort erfolgreich gebannt!", color=0xA020F0)
+    await ctx.respond(embed=embed)
+
+serverid = 981237860734742539
+rainbowrolename = 'Admin'
+
+delay = 0.6
+colours = [discord.Color.orange(),discord.Color.gold(),discord.Color.magenta(),discord.Color.red(),discord.Color.teal(),discord.Color.green(),discord.Color.purple()]
+
+async def rainbowrole(role):
+    for role in client.get_guild(serverid).roles:
+        if str(role) == str(rainbowrolename):
+            while not client.is_closed():
+                try:
+                    await role.edit(color=random.choice(colours))
+                except Exception:
+                    print("can't edit role, make sure the bot role is above the rainbow role and that is have the perms to edit roles")
+                    pass
+                await asyncio.sleep(delay)
+
+@client.slash_command(name = 'invite', description = 'Läst dich einen Bot mit seiner ID einladen!')
+async def invite(ctx, bot_id: Option(str, Required=True)):
+    embed=discord.Embed(title="Bot Invite", description="Hier sind die Einladungen zu den Bot den du in der ID angegeben hast! Falls du mich zu deinem Server einladen möchtest, schaue bei meinem Profil vorbei!", color=0x8a5cf5)
+    embed.add_field(name=":busts_in_silhouette: Invite ohne Rechte", value=f"https://discord.com/api/oauth2/authorize?client_id={bot_id}&permissions=0&scope=applications.commands%20bot", inline=False)
+    embed.add_field(name=":shield: Invite + Admin", value=f"https://discord.com/api/oauth2/authorize?client_id={bot_id}&permissions=8&scope=applications.commands%20bot", inline=False)
+    embed.add_field(name=":closed_book: ID von Bots", value="Falls du die ID von einem Bot nicht weißt: rechts klicke auf den Bot und unten ID kopieren, auf Handy: Bot halten und ID kopieren. Du muss dafür Entwicklermodus an haben: Einstellungen > Erweitert > Entwicklermodus", inline=False)
+    await ctx.respond(embed=embed)
+
+@client.event
+async def on_ready():
+    print("Bot ist nun online!")
+    client.loop.create_task(rainbowrole(rainbowrolename))
 
 
 keep_alive()

@@ -330,6 +330,17 @@ async def invite(ctx, bot_id: Option(str, Required=True)):
     embed.add_field(name=":closed_book: ID von Bots", value="Falls du die ID von einem Bot nicht weißt: rechts klicke auf den Bot und unten ID kopieren, auf Handy: Bot halten und ID kopieren. Du muss dafür Entwicklermodus an haben: Einstellungen > Erweitert > Entwicklermodus", inline=False)
     await ctx.respond(embed=embed)
 
+@client.slash_command(name='help', description='Zeigt alle Befehle vom Bot an')
+async def help(ctx):
+    embed=discord.Embed(title="Party Bot Commands", description="**Hier sind alle Befehle für den Bot!**\n\nAdmin braucht die 'Party-Bot Admin 😎' Rolle \nMod braucht die : 'Party-Bot Mod 🚀' Rolle \nFun braucht die : 'Party-Bot Fun 🎉' Rolle \n ", color=0xb870ff)
+    embed.add_field(name="Admin", value="/ban - Bannt User \n/banword - Sperrt ein Wort vom Server", inline=False)
+    embed.add_field(name="Moderator", value="/kick - Kickt User \n/timeout - timed User aus \n/clear - Löscht Nachrichten aus Kanal", inline=False)
+    embed.add_field(name="Fun", value="/dm - Schickt eine DM zu einen User\n/embed - Erstellt ein Embed \n/spam - Spammt eine Nachricht", inline=False)
+    embed.add_field(name="User", value="/avatar - Gibt dir ein Profilbild\n/help - Alle Befehle Liste\n/münzenwurf - wirft ne Münze\n/random - gibt dir eine random Zahl\n/reveal - Gibt den Quellcode des Bots \n/ping - Zeigt Verzögerung an\n/ben - frag Ben eine Frage\n/realmrang - Gibt dir einen Rang vom Realm auf DC\n/invite - Gibt dir n Invite Link zu einem Bot deiner Wahl", inline=False)
+
+    await ctx.respond(embed=embed)
+
+
 @client.event
 async def on_ready():
     print("Bot ist nun online!")

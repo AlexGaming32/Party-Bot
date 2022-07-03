@@ -1,0 +1,19 @@
+{
+    "slash": "```@client.slash_command(name = 'name', description = 'description')``` simple slash command template! Works for pycord! How to get pycord? /tag pycord \n**Created by: Imposter#9309**",
+    "inv": "If you want to post invites you can! In <#981239866459320450> \n**Created by: Imposter#9309**",
+    "realm": "Der Realm ist gerade offline weil Znow zu faul ist :P \n**Created by: Imposter#9309**",
+    "public": "Der Bot ist noch nicht \u00f6ffentlich weil er ziemlich viele Bugs hat und h\u00f6chstwahrscheinlich in besserer Form und in Englisch neugeschreiben wird! \n**Created by: Imposter#9309**",
+    "hidden": "```ctx.respond('Hi!', ephemeral=True)``` This is how to create a only you can see this message. You only can trigger these on interactions like slash commands, buttons etc! \n**Created by: Imposter#9309**",
+    "host": "This bot is hosted using https://replit.com/~. This is a website that allows anyone to write and run their code in the cloud. I recommend watching a tutorial on how to setup a repl for discord.py or whatever you use! Is it free? Yes it fully is free 24/7 but discord may ratelimit bots so sometimes it may crash. \n**Created by: Imposter#9309**",
+    "ratelimit": "If you get an error in your repl that your bot has been banned from using the API, run ```kill 1``` in the repl SHELL. \n**Created by: Imposter#9309**",
+    "gd": "For GD related projects I use the gd.py library. Github: https://github.com/nekitdev/gd.py/blob/master/docs/intro.rst, Docs: https://gdpy.readthedocs.io/en/latest/level.html, Libaray Server: https://nekit.dev/discord. \n**Created by: Imposter#9309**",
+    "author": "ineraction.user \ud83e\udd13 \n**Created by: Imposter#9309**",
+    "sudo": "Das hier ist ein Feature das Mods und anderen /sudo zu verwenden um User zu faken \ud83d\ude0e \n**Created by: Imposter#9309**",
+    "dev": "This bot is currently made by only 1 Person <@!904666156772757524> ist the creator of the bot. If you want to support this project you can join my discord server: https://discord.gg/VyzBt74WVY \ud83d\ude42 \n**Created by: Imposter#9309**",
+    "pycord": "If you need to install pycord run: Install cmd: ``pip install py-cord==2.0.0b2``  Pycord supports slash commands, ui and more! \n**Created by: Imposter#9309**",
+    "global": "Globalchat is coming soon! I already have a couple features for it but it will not release until the full Party Bot is done! \n**Created by: Imposter#9309**",
+    "susy": "This is a susy tag \ud83d\ude0e \n**Created by: suspect123#8994**",
+    "team": "Da das Team schon eig. ganz gut ist f\u00fcr die Anzahl an Spielern, brauchen wir nicht viele Mods. Falls du dich bewerben m\u00f6chtest schreibe eine Bewerbung: Warum sollen wir dich aufnehmen. Was m\u00f6chtest du im Team tun? Wie aktiv du bist? etc. \n**Created by: Imposter#9309**",
+    "rickroll": "https://youtu.be/dQw4w9WgXcQ \n**Created by: DaftAphid29310#0564**",
+    "test": "This is a test tag ignore pls\n**Created by: Imposter#9309**"
+}

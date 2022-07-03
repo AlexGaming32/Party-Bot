@@ -1116,6 +1116,8 @@ async def tagdel(ctx, name: Option(str, Required=True)):
     else:
         embed=discord.Embed(title=":warning: | Only **Imposter#9309** can do that!", color=0xff7a7a)
         await ctx.respond(embed=embed, ephemeral=True)
+        print('joe memme')
+        print('susy')
 
-
+        
 client.run(os.getenv('DEV_TOKEN'))
